@@ -52,7 +52,12 @@ export default function Page() {
                   alt="Team Logo"
                 />
                 <br />
-                <h1>{team.full_name}</h1>
+                <a
+                  href={`https://www.nba.com/${team.name}`}
+                  style={{ color: "rgba(62, 0, 129, 0.912)", fontSize:"20px" }}
+                >
+                  {team.full_name}
+                </a>
                 <h2>Conference</h2>
                 <p>{team.conference}</p>
                 <h2>Division</h2>

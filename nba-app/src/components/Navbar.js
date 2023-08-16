@@ -23,26 +23,16 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/players" className="link">
-              Players
-            </Link>
-          </li>
-          <li>
             <a href="/compare" className="link">
               Compare
             </a>
           </li>
-          <li>
-            <a href="/fantasyteam" className="link">
-              Fantasy Team
-            </a>
-          </li>
         </ul>
         <div className="signin">
-          <a href="/login">
-            <img src="/signin.png" alt="Log In" />
+          <a href="/players">
+            <img src="/signin.png" alt="Search player" />
           </a>
-          <div className="message">Log in</div>
+          <div className="message">Search for player</div>
         </div>
       </div>
     </div>
