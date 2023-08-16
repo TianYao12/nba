@@ -1,5 +1,5 @@
 const symptomsData = {
-   data: [
+  data: [
     { airport: "1", airline: "1" },
     { airport: "2", airline: "2" },
     { airport: "3", airline: "3" },
@@ -11,7 +11,7 @@ const symptomsData = {
     { airport: "9", airline: "9" },
     { airport: "10", airline: "10" },
     { airport: "11", airline: "11" },
-  ]
+  ],
 };
 
 export default function handler(req, res) {

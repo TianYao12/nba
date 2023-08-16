@@ -20,5 +20,6 @@ from backend import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/teams/', views.teams,name='teams')
+    path('api/teams/', views.teams, name='teams'),
+    path('api/teams/<int:id>', views.team, name='team')
 ]
