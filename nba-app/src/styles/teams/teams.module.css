@@ -11,13 +11,13 @@
 }
   
 .team {
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(233, 225, 239);
   display: flex;
-  border: 2px solid rgb(177, 175, 175);
+  border: 2px solid rgb(176, 175, 177);
 }
 
 .team:hover {
-  background-color: rgb(226, 225, 225);
+  background-color: rgb(228, 212, 239);
 }
 
 .img {
