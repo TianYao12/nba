@@ -2,18 +2,18 @@ import clientPromise from "../../../../lib/mongodb";
 
 export default async function handler(req, res) {
   try {
-    const { player } = req.query;
+    const { team} = req.query;
     const mongoClient = await clientPromise;
-    const players = await mongoClient
+    const teams = await mongoClient
       .db("nba")
       .collection("players2")
       .find({
-        PLAYER: player,
+        TEAM: team,
       })
       .toArray();
-    res.status(200).json(players);
+    res.status(200).json(teams);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Unable to fetch players" });
+    res.status(500).json({ error: "Unable to fetch teams" });
   }
 }

@@ -29,7 +29,7 @@ export default function TeamPage() {
         {teams.length > 0 ? (
           teams.map((team) => (
             <div className={styles.team}>
-              <a href={`/teams/${team.id}`}>
+              <a href={`/teams/${team.name}`}>
                 <Image
                   src={`/teamlogos/${team.name}.png`}
                   width={200}

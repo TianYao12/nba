@@ -3,30 +3,37 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-export default function Page() {
-  const [player, setPlayer] = useState("");
+export default function Player() {
+  const [player, setPlayer] = useState(null);
   const router = useRouter();
-  const playerid = router.query.player;
+  const { player: playerName } = router.query;
 
   useEffect(() => {
-    fetchPlayer();
-  }, [playerid]);
+    if (playerName) {
+      fetchPlayer(playerName);
+    }
+  }, [playerName]);
 
-  const fetchPlayer = async () => {
+  const fetchPlayer = async (name) => {
     try {
-      const response = await axios.get(`/api/players/${playerid}`);
+      const response = await axios.get(`/api/players/playerapi?player=${name}`);
       setPlayer(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <>
       <Link href="/players"> ← Back to players </Link>
-      <br />
-      <h1>{player.first_name} {player.last_name}</h1>
-      <h2>Position</h2>
-      <p>{player.position}</p>
+      {player ? (
+        <>
+          <h1>{player.PLAYER}</h1>
+          {/* Display other player information as needed */}
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </>
   );
 }
