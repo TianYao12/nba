@@ -17,7 +17,6 @@ export default function Page() {
 
   useEffect(() => {
     if (teamId) {
-      // Check if teamId is defined
       fetchData();
     }
   }, [teamId]);

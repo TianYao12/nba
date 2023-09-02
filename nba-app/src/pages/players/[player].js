@@ -23,13 +23,24 @@ export default function Player() {
     }
   };
 
+  useEffect(() => {
+    console.log(player); // This will log the updated value of player
+  }, [player]); // Add player to the dependency array
+
   return (
     <>
       <Link href="/players"> ← Back to players </Link>
       {player ? (
         <>
-          <h1>{player.PLAYER}</h1>
-          {/* Display other player information as needed */}
+          {player.map((playerdata) => (
+            <p>
+              <strong>Team:</strong> {playerdata.TEAM}
+              <br />
+              <strong>Year:</strong> {playerdata.Year}
+              <br />
+              <strong>Season Type:</strong> {playerdata.Season_type}
+            </p>
+          ))}
         </>
       ) : (
         <p>Loading...</p>
