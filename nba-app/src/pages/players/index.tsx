@@ -2,6 +2,8 @@
 import axios from "axios";
 import { useState } from "react";
 import styles from "../../styles/players.module.css";
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 interface Player {
   _id: string;
@@ -34,17 +36,7 @@ interface Player {
 export default function PlayersPage() {
   const [name, setName] = useState("");
   const [playerData, setPlayerData] = useState<Player[] | null>(null);
-
-  const fetchPlayers = async () => {
-    try {
-      const response = await axios.get<Player[]>(
-        `/api/players/playerapi?player=${name}`
-      );
-      setPlayerData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { push } = useRouter();
 
   return (
     <>
@@ -59,7 +51,7 @@ export default function PlayersPage() {
           placeholder="Search for a player by full name"
           className={styles.searchBar}
         />
-        <button onClick={fetchPlayers} className={styles.button}>
+        <button onClick={() => push(`players/${name}`)} className={styles.button}>
           Search
         </button>
       </div>
