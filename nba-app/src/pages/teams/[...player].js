@@ -2,23 +2,23 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-import styles from "../../styles/player.module.css"
+import styles from "../../styles/player.module.css";
+import Image from "next/image";
 
 export default function Player() {
   const [player, setPlayer] = useState(null);
   const [pic, setPic] = useState(null);
   const router = useRouter();
   const { player: playerName } = router.query;
-
   useEffect(() => {
     if (playerName) {
-      fetchPlayer(playerName);
+      fetchPlayer(playerName[1]);
     }
   }, [playerName]);
 
   useEffect(() => {
     if (playerName) {
-      fetchPlayerImage(playerName);
+      fetchPlayerImage(playerName[1]);
     }
   }, [playerName]);
 
@@ -37,9 +37,10 @@ export default function Player() {
         "https://raw.githubusercontent.com/alexnoob/BasketBall-GM-Rosters/master/player-photos.json"
       );
       const playerImages = response.data;
-
       const playerKey = getKey(name);
-
+      if (playerKey) {
+        console.log(playerKey);
+      }
       if (playerImages[playerKey]) {
         setPic(playerImages[playerKey]);
       }
@@ -63,26 +64,30 @@ export default function Player() {
 
   return (
     <>
-      <Link href="/players"> ← Back to players </Link>
+      <Link href="/players" style={{textDecoration:"none",color:"black"}}> ← Back to players </Link>
       <div className={styles.main}>
-      {pic && <img src={pic} alt="Player" style={{ width: '300px' }} />}
-      {player ? (
-        <>
-          {player.map((playerdata) => (
-            <p key={playerdata.id}>
-              <strong>Team:</strong> {playerdata.TEAM}
-              <br />
-              <strong>Year:</strong> {playerdata.Year}
-              <br />
-              <strong>Season Type: </strong>
-              {playerdata.Season_type.split("%20")[0]}{" "}
-              {playerdata.Season_type.split("%20")[1]}
-            </p>
-          ))}
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+        {player && playerName && pic? (
+          <>
+            <img
+              src={`/teamlogos/${playerName[0].toLowerCase()}.png`}
+              style={{ width: "100px" }}
+            />
+            <img src={pic} alt="Player" style={{ width: "300px" }} />
+            {player.map((playerdata) => (
+              <p key={playerdata.id}>
+                <strong>Team:</strong> {playerdata.TEAM}
+                <br />
+                <strong>Year:</strong> {playerdata.Year}
+                <br />
+                <strong>Season Type: </strong>
+                {playerdata.Season_type.split("%20")[0]}{" "}
+                {playerdata.Season_type.split("%20")[1]}
+              </p>
+            ))}
+          </>
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     </>
   );
