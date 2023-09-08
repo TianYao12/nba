@@ -127,7 +127,7 @@ export default function Page() {
                   .map((player) => (
                     <tr key={player.id}>
                       <td>
-                        <a href={`/teams/${teamId}/${player.PLAYER}`}>{player.PLAYER}</a>
+                        <a href={`/players/${player.PLAYER}`}>{player.PLAYER}</a>
                       </td>
                       <td>{player.Year}</td>
                       <td>{player.Season_type}</td>

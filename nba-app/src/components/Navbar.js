@@ -13,11 +13,6 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link href="/game3" className="link">
-              Games
-            </Link>
-          </li>
-          <li>
             <Link href="/teams" className="link">
               Teams
             </Link>
