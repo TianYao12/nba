@@ -90,7 +90,7 @@ export default function Player() {
     datasets: [
       {
         label: "PPG",
-        data: player ? player.map((data) => (data.PTS/data.GP)) : [], // Add a conditional check here
+        data: player ? player.map((data) => data.PTS / data.GP) : [], // Add a conditional check here
         borderColor: "#cb0c9f",
         borderWidth: 3,
         pointBorderColor: "#cb0c9f",
@@ -133,7 +133,7 @@ export default function Player() {
             family: "Arial",
           },
         },
-        min: 10,
+        min: 0,
       },
       x: {
         ticks: {
@@ -163,27 +163,49 @@ export default function Player() {
       <Link href="/players"> ← Back to players </Link>
       <div className={styles.main}>
         {pic && <img src={pic} alt="Player" style={{ width: "300px" }} />}
+        <div className={styles.right}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>PLAYER</th>
+                <th>Year</th>
+                <th>Season Type</th>
+                <th>GP</th>
+                <th>MIN</th>
+                <th>FG_PCT</th>
+                <th>PPG</th>
+                <th>APG</th>
+                <th>RPG</th>
+              </tr>
+            </thead>
+            <tbody>
+              {player
+                ? player.map((player) => (
+                    <tr key={player.id}>
+                      <td>
+                        <a href={`/players/${player.PLAYER}`}>
+                          {player.PLAYER}
+                        </a>
+                      </td>
+                      <td>{player.Year}</td>
+                      <td>{player.Season_type}</td>
+                      <td>{player.GP}</td>
+                      <td>{player.MIN}</td>
+                      <td>{player.FG_PCT}</td>
+                      <td>{(player.PTS / player.GP).toFixed(1)}</td>
+                      <td>{(player.AST / player.GP).toFixed(1)}</td>
+                      <td>{(player.REB / player.GP).toFixed(1)}</td>
+                    </tr>
+                  ))
+                : null}
+            </tbody>
+          </table>
+        </div>
+
         {player ? (
           <>
-            {player.map((playerdata) => (
-              <div key={playerdata.id}>
-                <p>
-                  <strong>Team:</strong> {playerdata.TEAM}
-                  <br />
-                  <strong>Year:</strong> {playerdata.Year}
-                  <br />
-                  <strong>Season Type: </strong>
-                  {playerdata.Season_type.split("%20")[0]}{" "}
-                  {playerdata.Season_type.split("%20")[1]}
-                  <strong>PPG:</strong>{" "}
-                  {(playerdata.PTS / playerdata.GP).toFixed(1)}
-                </p>
-              </div>
-            ))}
             <div>
-              <h1 className="font-bold text-3xl text-center mt-10">
-                Line Chart using ChartJS
-              </h1>
+              <h1>{playerName} Statistics</h1>
               <div
                 style={{
                   width: "900px",
