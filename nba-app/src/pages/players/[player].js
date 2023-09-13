@@ -162,12 +162,18 @@ export default function Player() {
     <>
       <Link href="/players"> ← Back to players </Link>
       <div className={styles.main}>
-        {pic && <img src={pic} alt="Player" style={{ width: "300px" }} />}
+        {pic && (
+          <img
+            src={pic}
+            alt="Player"
+            style={{ width: "200px", height: "150px", borderRadius: "5px", paddingBottom:"30px" }}
+          />
+        )}
+        <h1>{playerName} Statistics</h1>
         <div className={styles.right}>
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>PLAYER</th>
                 <th>Year</th>
                 <th>Season Type</th>
                 <th>GP</th>
@@ -182,11 +188,6 @@ export default function Player() {
               {player
                 ? player.map((player) => (
                     <tr key={player.id}>
-                      <td>
-                        <a href={`/players/${player.PLAYER}`}>
-                          {player.PLAYER}
-                        </a>
-                      </td>
                       <td>{player.Year}</td>
                       <td>{player.Season_type}</td>
                       <td>{player.GP}</td>
@@ -205,7 +206,7 @@ export default function Player() {
         {player ? (
           <>
             <div>
-              <h1>{playerName} Statistics</h1>
+              <h1 style={{marginTop:"90px"}}>Graph of {playerName} Statistics</h1>
               <div
                 style={{
                   width: "900px",
