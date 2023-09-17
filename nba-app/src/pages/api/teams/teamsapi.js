@@ -10,17 +10,6 @@ export const addTeams = async (teams) => {
   return response.insertedIds;
 };
 
-export const deleteTeamsAfter30thElement = async () => {
-  const mongoClient = await clientPromise;
-  const collection = mongoClient.db("nba").collection("teams");
-
-  const deletionFilter = { id: { $gt: 30 } };
-
-  const result = await collection.deleteMany(deletionFilter);
-
-  return result.deletedCount;
-};
-
 export default async (req, res) => {
   if (req.method === "GET") {
     try {
@@ -56,14 +45,6 @@ export default async (req, res) => {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Unable to add teams" });
-    }
-  } else if (req.method === "DELETE") {
-    try {
-      const deletedCount = await deleteTeamsAfter30thElement();
-      res.status(200).json({ message: `Deleted ${deletedCount} teams` });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Unable to delete teams" });
     }
   }
 };
