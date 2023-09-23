@@ -1,4 +1,3 @@
-
 .title {
   margin-bottom: 20px;
 }
@@ -10,14 +9,18 @@
   row-gap: 15px;
 }
   
+
 .team {
   background-color: rgb(233, 225, 239);
   display: flex;
   border: 2px solid rgb(176, 175, 177);
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; 
 }
 
 .team:hover {
-  background-color: rgb(228, 212, 239);
+  transform: translateY(-5px); 
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); 
+  background-color: rgb(228, 212, 239); 
 }
 
 .img {

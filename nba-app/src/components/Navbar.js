@@ -17,11 +17,6 @@ function Navbar() {
               Teams
             </Link>
           </li>
-          <li>
-            <a href="/compare" className="link">
-              Compare
-            </a>
-          </li>
         </ul>
         <div className="signin">
           <a href="/players">

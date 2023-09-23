@@ -30,3 +30,25 @@
   .table tbody tr:nth-child(even) {
     background-color: #fce2fa;
   }
+
+  .choose {
+    padding:3px 8px 3px 8px;
+    margin-right: 100px;
+    margin-left:20px
+  }
+
+  .top {
+    display: flex;
+    position: relative;
+    align-items: center;
+  }
+
+  .word {
+    display: flex;
+    position:absolute;
+    left:300px;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 30px;
+  }
+

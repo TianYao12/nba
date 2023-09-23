@@ -29,6 +29,8 @@ ChartJS.register(
 export default function Player() {
   const [player, setPlayer] = useState(null);
   const [pic, setPic] = useState(null);
+  const [selectedSeasonType, setSelectedSeasonType] =
+    useState("Regular%20Season");
   const router = useRouter();
   const { player: playerName } = router.query;
 
@@ -83,14 +85,24 @@ export default function Player() {
     return playerKey;
   };
 
-  const chartLabels = player ? player.map((data) => data.Year) : [];
+  const chartLabels = player
+    ? player
+        .filter((playerData) => playerData.Season_type === selectedSeasonType)
+        .map((data) => data.Year)
+    : [];
 
   const data = {
     labels: chartLabels,
     datasets: [
       {
         label: "PPG",
-        data: player ? player.map((data) => data.PTS / data.GP) : [], // Add a conditional check here
+        data: player
+          ? player
+              .filter(
+                (playerData) => playerData.Season_type === selectedSeasonType
+              )
+              .map((data) => data.PTS / data.GP)
+          : null,
         borderColor: "#cb0c9f",
         borderWidth: 3,
         pointBorderColor: "#cb0c9f",
@@ -117,7 +129,7 @@ export default function Player() {
       y: {
         ticks: {
           font: {
-            size: 17,
+            size: 20,
             weight: "bold",
           },
         },
@@ -138,7 +150,7 @@ export default function Player() {
       x: {
         ticks: {
           font: {
-            size: 17,
+            size: 20,
             weight: "bold",
           },
         },
@@ -162,20 +174,36 @@ export default function Player() {
     <>
       <Link href="/players"> ← Back to players </Link>
       <div className={styles.main}>
+        <div className={styles.top}>
         {pic && (
           <img
             src={pic}
             alt="Player"
-            style={{ width: "200px", height: "150px", borderRadius: "5px", paddingBottom:"30px" }}
+            style={{
+              width: "200px",
+              height: "150px",
+              borderRadius: "5px",
+              paddingBottom: "30px",
+            }}
           />
         )}
-        <h1>{playerName} Statistics</h1>
+        <p className={styles.word}>{playerName}</p>
+        </div>
+        
+        <select
+          id="seasonTypeFilter"
+          onChange={(e) => setSelectedSeasonType(e.target.value)}
+          value={selectedSeasonType}
+        >
+          <option value="Regular%20Season">Regular Season</option>
+          <option value="Playoffs">Playoffs</option>
+        </select>
+
         <div className={styles.right}>
           <table className={styles.table}>
             <thead>
               <tr>
                 <th>Year</th>
-                <th>Season Type</th>
                 <th>GP</th>
                 <th>MIN</th>
                 <th>FG_PCT</th>
@@ -186,18 +214,22 @@ export default function Player() {
             </thead>
             <tbody>
               {player
-                ? player.map((player) => (
-                    <tr key={player.id}>
-                      <td>{player.Year}</td>
-                      <td>{player.Season_type}</td>
-                      <td>{player.GP}</td>
-                      <td>{player.MIN}</td>
-                      <td>{player.FG_PCT}</td>
-                      <td>{(player.PTS / player.GP).toFixed(1)}</td>
-                      <td>{(player.AST / player.GP).toFixed(1)}</td>
-                      <td>{(player.REB / player.GP).toFixed(1)}</td>
-                    </tr>
-                  ))
+                ? player
+                    .filter(
+                      (playerstats) =>
+                        playerstats.Season_type === selectedSeasonType
+                    )
+                    .map((player) => (
+                      <tr key={player.id}>
+                        <td>{player.Year}</td>
+                        <td>{player.GP}</td>
+                        <td>{player.MIN}</td>
+                        <td>{player.FG_PCT}</td>
+                        <td>{(player.PTS / player.GP).toFixed(1)}</td>
+                        <td>{(player.AST / player.GP).toFixed(1)}</td>
+                        <td>{(player.REB / player.GP).toFixed(1)}</td>
+                      </tr>
+                    ))
                 : null}
             </tbody>
           </table>
@@ -206,7 +238,9 @@ export default function Player() {
         {player ? (
           <>
             <div>
-              <h1 style={{marginTop:"90px"}}>Graph of {playerName} Statistics</h1>
+              <h1 style={{ marginTop: "90px" }}>
+                {playerName} {selectedSeasonType} PPG
+              </h1>
               <div
                 style={{
                   width: "900px",
