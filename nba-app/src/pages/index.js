@@ -1,25 +1,8 @@
-// pages/index.js
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import styles from "../styles/news.module.css";
 
-const HomePage = () => {
-  const [news, setNews] = useState([]);
-
-  useEffect(() => {
-    fetchNews();
-  }, []);
-
-  const fetchNews = async () => {
-    try {
-      const response = await axios.get("/api/newsget");
-      setNews(response.data.articles);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+const HomePage = ({ news }) => {
   return (
     <>
       <div className={styles.title}>
@@ -29,12 +12,9 @@ const HomePage = () => {
         {news.length > 0 ? (
           news.map((article) =>
             article.urlToImage ? (
-              <div className={styles.item}>
+              <div className={styles.item} key={article.title}>
                 <Link href={article.url} className={styles.link}>
-                  <img
-                    src={article.urlToImage}
-                    alt={article.title}
-                  />
+                  <img src={article.urlToImage} alt={article.title} />
                   <p>{article.title}</p>
                 </Link>
               </div>
@@ -47,4 +27,27 @@ const HomePage = () => {
     </>
   );
 };
+
+// make use of static site regeneration 
+export const getStaticProps = async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/api/newsget");
+    const news = response.data.articles;
+
+    return {
+      props: {
+        news,
+      },
+      revalidate: 3600, // revalidate every hour
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        news: [],
+      },
+    };
+  }
+};
+
 export default HomePage;

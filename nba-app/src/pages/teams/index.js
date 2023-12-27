@@ -1,32 +1,16 @@
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "../../styles/teams/teams.module.css";
 
-export default function TeamPage() {
-  const [teams, setTeams] = useState([]);
-
-  useEffect(() => {
-    fetchTeams();
-  }, []);
-
-  const fetchTeams = async () => {
-    try {
-      const response = await axios.get("/api/teams/teamsapi");
-      setTeams(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+export default function TeamPage({ teams }) {
   return (
     <div>
       <div className={styles.title}>
         <h1>NBA Teams</h1>
       </div>
       <div className={styles.grid}>
-        {teams.length > 0 ? (
+        {teams ? (
           teams.map((team) => (
             <div className={styles.team}>
               <a href={`/teams/${team.name}`}>
@@ -50,6 +34,29 @@ export default function TeamPage() {
     </div>
   );
 }
+
+export const getStaticProps = async () => {
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/api/teams/teamsapi"
+    );
+    const teams = response.data;
+
+    return {
+      props: {
+        teams,
+      },
+      revalidate: 3600,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      props: {
+        teams: [],
+      },
+    };
+  }
+};
 
 {
   /* THIS WOULD BE TO ITERATE THROUGH ENTIRE JSON

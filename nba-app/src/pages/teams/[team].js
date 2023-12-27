@@ -23,7 +23,7 @@ export default function Page() {
 
   const fetchData = async () => {
     try {
-      const mappedTeam = teamMappings[teamId]; // Map the router query parameter
+      const mappedTeam = teamMappings[teamId]; // take the corresponding json value from the query
       if (!mappedTeam) {
         console.error("No mapping found for team:", teamId);
         setIsLoading(false);
