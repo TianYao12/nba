@@ -1,6 +1,10 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const endpoint = "https://newsapi.org/v2/everything";
     const apiKey = "7c1299368f8145e78b8b35ff5fe2271e";

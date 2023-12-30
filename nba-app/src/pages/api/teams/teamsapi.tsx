@@ -1,7 +1,8 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../../../lib/mongodb";
 import axios from "axios";
 
-export const addTeams = async (teams) => {
+export const addTeams = async (teams: any[]) => {
   const mongoClient = await clientPromise;
   const response = await mongoClient
     .db("nba")
@@ -10,7 +11,7 @@ export const addTeams = async (teams) => {
   return response.insertedIds;
 };
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
       const mongoClient = await clientPromise;

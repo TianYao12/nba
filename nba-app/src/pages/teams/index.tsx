@@ -3,7 +3,17 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "../../styles/teams/teams.module.css";
 
-export default function TeamPage({ teams }) {
+interface Team {
+  name: string;
+  full_name: string;
+  conference: string;
+}
+
+interface TeamPageProps {
+  teams: Team[];
+}
+
+export default function TeamPage({ teams }: TeamPageProps) {
   return (
     <div>
       <div className={styles.title}>

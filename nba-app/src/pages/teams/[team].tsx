@@ -5,15 +5,28 @@ import Image from "next/image";
 import styles from "../../styles/teams/team.module.css";
 import teamMappings from "../../../public/teams.json";
 
+interface PlayerStats {
+  id: number;
+  PLAYER: string;
+  Year: string;
+  Season_type: string;
+  GP: number;
+  MIN: number;
+  FG_PCT: number;
+  PTS: number;
+  AST: number;
+  REB: number;
+}
 export default function Page() {
   const [team, setTeam] = useState(null);
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<PlayerStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState("2012-13");
-  const [selectedSeasonType, setSelectedSeasonType] = useState("Regular%20Season");
-  
+  const [selectedSeasonType, setSelectedSeasonType] =
+    useState("Regular%20Season");
+
   const router = useRouter();
-  const { team: teamId } = router.query;
+  const { team: teamId } = router.query as { team: string };
 
   useEffect(() => {
     if (teamId) {
@@ -23,7 +36,7 @@ export default function Page() {
 
   const fetchData = async () => {
     try {
-      const mappedTeam = teamMappings[teamId]; // take the corresponding json value from the query
+      const mappedTeam = teamMappings[teamId]; // Map the router query parameter
       if (!mappedTeam) {
         console.error("No mapping found for team:", teamId);
         setIsLoading(false);
@@ -127,7 +140,9 @@ export default function Page() {
                   .map((player) => (
                     <tr key={player.id}>
                       <td>
-                        <a href={`/players/${player.PLAYER}`}>{player.PLAYER}</a>
+                        <a href={`/players/${player.PLAYER}`}>
+                          {player.PLAYER}
+                        </a>
                       </td>
                       <td>{player.Year}</td>
                       <td>{player.Season_type}</td>
@@ -135,8 +150,8 @@ export default function Page() {
                       <td>{player.MIN}</td>
                       <td>{player.FG_PCT}</td>
                       <td>{(player.PTS / player.GP).toFixed(1)}</td>
-                      <td>{(player.AST/player.GP).toFixed(1)}</td>
-                      <td>{(player.REB/player.GP).toFixed(1)}</td>
+                      <td>{(player.AST / player.GP).toFixed(1)}</td>
+                      <td>{(player.REB / player.GP).toFixed(1)}</td>
                     </tr>
                   ))}
               </tbody>

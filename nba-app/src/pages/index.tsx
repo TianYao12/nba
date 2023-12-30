@@ -2,7 +2,17 @@ import axios from "axios";
 import Link from "next/link";
 import styles from "../styles/news.module.css";
 
-const HomePage = ({ news }) => {
+interface News {
+  url: string,
+  urlToImage: string,
+  title: string
+}
+
+interface NewsPageProps {
+  news: News[]
+}
+
+const HomePage = ({ news }: NewsPageProps) => {
   return (
     <>
       <div className={styles.title}>

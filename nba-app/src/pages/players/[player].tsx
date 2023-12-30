@@ -26,13 +26,26 @@ ChartJS.register(
   Filler
 );
 
+// types
+interface PlayerData {
+  id: number;
+  Year: string;
+  GP: number;
+  MIN: number;
+  FG_PCT: number;
+  PTS: number;
+  AST: number;
+  REB: number;
+  Season_type: string;
+}
+
 export default function Player() {
-  const [player, setPlayer] = useState(null);
+  const [player, setPlayer] = useState<PlayerData[] | null>(null);
   const [pic, setPic] = useState(null);
   const [selectedSeasonType, setSelectedSeasonType] =
     useState("Regular%20Season");
   const router = useRouter();
-  const { player: playerName } = router.query;
+  const { player: playerName } = router.query as { player: string };;
 
   useEffect(() => {
     if (playerName) {
@@ -46,7 +59,7 @@ export default function Player() {
     }
   }, [playerName]);
 
-  const fetchPlayer = async (name) => {
+  const fetchPlayer = async (name:string) => {
     try {
       const response = await axios.get(`/api/players/playerapi?player=${name}`);
       setPlayer(response.data);
@@ -55,7 +68,7 @@ export default function Player() {
     }
   };
 
-  const fetchPlayerImage = async (name) => {
+  const fetchPlayerImage = async (name:string) => {
     try {
       const response = await axios.get(
         "https://raw.githubusercontent.com/alexnoob/BasketBall-GM-Rosters/master/player-photos.json"
@@ -72,7 +85,7 @@ export default function Player() {
     }
   };
 
-  const getKey = (fullName) => {
+  const getKey = (fullName:string) => {
     const nameParts = fullName.split(" ");
 
     const firstName = nameParts[0];
@@ -109,7 +122,7 @@ export default function Player() {
         pointBorderWidth: 3,
         tension: 0.5,
         fill: true,
-        backgroundColor: (context) => {
+        backgroundColor: (context:any) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 300);
           gradient.addColorStop(0, "#f797e1");
@@ -120,7 +133,8 @@ export default function Player() {
     ],
   };
 
-  const options = {
+  // I didn't know what type this was so i just put any
+  const options:any = {
     plugins: {
       legend: true,
     },
