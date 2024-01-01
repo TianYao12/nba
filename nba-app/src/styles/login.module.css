@@ -20,3 +20,13 @@
     font-size: 20px;
     background-color: rgba(46, 2, 64, 0.8)
 }
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.small {
+    display: flex;
+    flex-direction: column;
+}

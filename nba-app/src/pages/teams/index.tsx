@@ -2,6 +2,8 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../../styles/teams/teams.module.css";
+import { getSession, useSession } from "next-auth/react";
+import { GetServerSideProps } from "next";
 
 interface Team {
   name: string;
@@ -45,7 +47,17 @@ export default function TeamPage({ teams }: TeamPageProps) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  const session = await getSession({ req });
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   try {
     const response = await axios.get(
       "http://localhost:3000/api/teams/teamsapi"
@@ -55,14 +67,15 @@ export const getStaticProps = async () => {
     return {
       props: {
         teams,
+        session,
       },
-      revalidate: 3600,
     };
   } catch (err) {
     console.error(err);
     return {
       props: {
         teams: [],
+        session,
       },
     };
   }

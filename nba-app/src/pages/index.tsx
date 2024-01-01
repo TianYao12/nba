@@ -19,19 +19,12 @@ interface NewsPageProps {
 const HomePage = ({ news }: NewsPageProps) => {
   const { data: session } = useSession();
 
-  function handleSignOut() {
-    signOut()
-  }
-
   return (
     <>
       {session ? (
         <>
           <div className={styles.title}>
-            <p>Hello {session.user?.email}</p>
-            <p>Hello {session.user?.name}</p>
-            <h1> NBA News</h1>
-            <button onClick={handleSignOut}>Sign Out</button>
+            <h1> {session.user?.name}'s NBA News</h1> 
           </div>
           <div className={styles.grid}>
             {news.length > 0 ? (
@@ -87,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         news: [],
+        session,
       },
     };
   }

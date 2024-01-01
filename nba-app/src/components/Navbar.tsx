@@ -1,5 +1,10 @@
 import Link from "next/link";
+import { getSession, useSession, signOut } from "next-auth/react";
+
 function Navbar() {
+  function handleSignOut() {
+    signOut()
+  }
   return (
     <div className="outside">
       <div className="header">
@@ -24,7 +29,7 @@ function Navbar() {
           </li>
         </ul>
         <div className="signin">
-          <button onClick={""} style={{backgroundColor:"rgba(17, 0, 35, 0.912)"}}>
+          <button onClick={handleSignOut} style={{backgroundColor:"rgba(17, 0, 35, 0.912)"}}>
             <img src="/signin.png" alt="signout" />
             </button>
           <div className="message">Sign out</div>
