@@ -1,7 +1,7 @@
 // React Component
 import axios from "axios";
 import { useState } from "react";
-import styles from "../../styles/players.module.css";
+import styles from "../../styles/search.module.css";
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -41,7 +41,7 @@ export default function PlayersPage() {
   return (
     <>
       <div className={styles.search}>
-        <h1 style={{ marginTop: "150px" }}>Search for NBA Player Statistics</h1>
+        <h1 style={{ marginTop: "150px", color:"rgba(46, 2, 64, 0.8)" }}>Search for NBA Player Statistics</h1>
         <input
           type="text"
           value={name}
