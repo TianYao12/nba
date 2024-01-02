@@ -8,4 +8,7 @@ There is a team page where you can click on different NBA teams which to a page 
 
 Clicking on each player displays the player's face and his statistics from the various season, with an interactive graph that displays his statistics.
 
-Data is web scraped from stats.nba.com and stored in **MongoDB** database and **Next.js API routes** handles interactions with MongoDB and the public API, while static site regeneration is used for fast loading.
+Data is web scraped from **stats.nba.com** and stored in **MongoDB** database and **Next.js API routes** handles interactions with MongoDB and the public API, while static site regeneration is used for fast loading.
+
+User authentication is done with **NextAuth, sessions, and MongoDB**
+ 
