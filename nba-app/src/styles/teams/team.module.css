@@ -52,3 +52,29 @@
     margin-right: 100px;
     margin-left:20px
   }
+
+.link {
+    position: relative;
+    color: rgba(62, 0, 129, 0.912);
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.link .float {
+  position: absolute;
+  top: 30px;
+  opacity: 0;
+  z-index: 2;
+  font-size: 15px;
+  background-color: rgb(71, 71, 71);
+  color: white;
+  opacity: 0;
+  transition: 0.3s;
+  padding: 5px;
+  border-radius: 3px;
+
+}
+
+.link:hover .float {
+  opacity: 1;
+}

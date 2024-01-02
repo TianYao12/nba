@@ -18,13 +18,13 @@ interface NewsPageProps {
 
 const HomePage = ({ news }: NewsPageProps) => {
   const { data: session } = useSession();
-
+  console.log(session)
   return (
     <>
       {session ? (
         <>
           <div className={styles.title}>
-            <h1> {session.user?.name}'s NBA News</h1> 
+            <h1> {session.user?.email}'s NBA News</h1> 
           </div>
           <div className={styles.grid}>
             {news.length > 0 ? (

@@ -4,6 +4,7 @@ ul {
     list-style: none;
     font-size: 17px;
   }
+  
 .outside{
   position:fixed;
   top:0;

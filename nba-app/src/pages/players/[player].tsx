@@ -61,7 +61,7 @@ export default function Player() {
 
   const fetchPlayer = async (name:string) => {
     try {
-      const response = await axios.get(`/api/players/playerapi?player=${name}`);
+      const response = await axios.get(`/api/playerapi?player=${name}`);
       setPlayer(response.data);
     } catch (error) {
       console.error(error);

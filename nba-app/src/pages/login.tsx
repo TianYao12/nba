@@ -27,7 +27,7 @@ const Login = () => {
       password: values.password,
       callbackUrl: "http://localhost:3000",
     });
-    console.log(status)
+    if (status.ok) router.push(status.url)
   }
 
   async function handleGoogleSignIn() {

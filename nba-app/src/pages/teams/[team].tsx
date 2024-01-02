@@ -108,9 +108,10 @@ export default function Page() {
                 <br />
                 <a
                   href={`https://www.nba.com/${teamId}`}
-                  style={{ color: "rgba(62, 0, 129, 0.912)", fontSize: "20px" }}
+                  className={styles.link}
                 >
                   {teamId}
+                  <p className={styles.float}>Visit this team's website</p>
                 </a>
               </>
             }
