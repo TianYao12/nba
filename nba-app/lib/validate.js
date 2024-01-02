@@ -31,7 +31,7 @@ export function registerValidate(values) {
   if (!values.password) {
     errors.password = "Password required";
   }
-  if (values.password.length < 5 || values.password.length > 20) {
+  if (values.password.length <= 5 || values.password.length > 20) {
     errors.password = "Password length must be greater than 5 and less than 20";
   }
   if (values.password !== values.confirmPassword) {

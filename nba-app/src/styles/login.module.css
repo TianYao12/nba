@@ -15,10 +15,10 @@
     padding: 10px 10px 10px 10px;
     width: 525px;
     margin-top: 20px;
-    color: #FFFFFF;
+    color:rgba(17, 0, 35, 0.912);
     border-radius: 5px;
     font-size: 20px;
-    background-color: rgba(46, 2, 64, 0.8)
+    background-color: rgba(226, 185, 242, 0.695)
 }
 
 .form {
@@ -29,4 +29,15 @@
 .small {
     display: flex;
     flex-direction: column;
+}
+
+.h1 {
+    color:rgba(17, 0, 35, 0.912);
+    font-weight: bold;
+}
+
+.end {
+    margin-top:20px;
+    font-weight: bold;
+    color:rgba(17, 0, 35, 0.912);
 }

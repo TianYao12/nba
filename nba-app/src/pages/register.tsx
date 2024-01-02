@@ -2,14 +2,19 @@ import styles from "../styles/login.module.css";
 import { signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
 import { useState } from "react";
-import loginValidate, { registerValidate } from "../../lib/validate";
+import { registerValidate } from "../../lib/validate";
+import { useRouter } from "next/router";
+
 interface Submission {
+  username: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 const Register = () => {
   const [show, setShow] = useState(false);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -21,10 +26,18 @@ const Register = () => {
     onSubmit,
   });
 
-  console.log(formik.errors);
-
   async function onSubmit(values: Submission) {
-    console.log(values);
+    if (Object.keys(formik.errors).length === 0) {
+      const response = await fetch("http://localhost:3000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const data = await response.json();
+      if (data) router.push("http://localhost:3000");
+    } else {
+      console.log(formik.errors);
+    }    
   }
 
   return (
