@@ -15,3 +15,5 @@ User authentication is done with **NextAuth, sessions, and MongoDB**
 **getServerSideProps** is used to check for the user session.
 If the user is not authenticated (session is not present), it redirects the user to the login page.
 If the user's session is present, the user is authenticated and the page will be updated for every request made, allowing the page to display the latest NBA news
+
+Some pages are fetched at request time using getServerSideProps while some pages are fetched client-side
