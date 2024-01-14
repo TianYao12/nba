@@ -11,4 +11,8 @@ Clicking on each player displays the player's face and his statistics from the v
 Data is web scraped from **stats.nba.com** and stored in **MongoDB** database and **Next.js API routes** handles interactions with MongoDB and the public API, while static site regeneration is used for fast loading.
 
 User authentication is done with **NextAuth, sessions, and MongoDB**
- 
+
+****Authentication Check****
+**getServerSideProps** is used to check for the user session.
+If the user is not authenticated (session is not present), it redirects the user to the login page.
+If the user's session is present, the user is authenticated and the page will be updated for every request made, allowing the page to display the latest NBA news
