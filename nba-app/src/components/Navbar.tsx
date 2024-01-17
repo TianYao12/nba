@@ -1,10 +1,19 @@
 import Link from "next/link";
 import { getSession, useSession, signOut } from "next-auth/react";
+import { useTranslation } from "react-i18next";
+import i18n from "../../lib/i18n";
 
 function Navbar() {
+  const { t } = useTranslation();
   function handleSignOut() {
-    signOut()
+    signOut();
   }
+  function handleTranslation() {
+    i18n.language === "en"
+      ? i18n.changeLanguage("zh")
+      : i18n.changeLanguage("en");
+  }
+
   return (
     <div className="outside">
       <div className="header">
@@ -14,24 +23,31 @@ function Navbar() {
         <ul className="main-nav">
           <li>
             <Link href="/" className="link">
-              News
+              {t("news")}
             </Link>
           </li>
           <li>
             <Link href="/teams" className="link">
-              Teams
+              {t("teams")}
             </Link>
           </li>
           <li>
             <Link href="/players" className="link">
-              Search for Player
+              {t("search-for-player")}
             </Link>
           </li>
         </ul>
         <div className="signin">
-          <button onClick={handleSignOut} style={{backgroundColor:"rgba(17, 0, 35, 0.912)"}}>
+          <Link href="/" onClick={handleTranslation} className="translate">
+            <strong>{t("translate")}</strong>
+          </Link>
+          <button
+            onClick={handleSignOut}
+            style={{ backgroundColor: "rgba(17, 0, 35, 0.912)" }}
+            className="icon"
+          >
             <img src="/signin.png" alt="signout" />
-            </button>
+          </button>
           <div className="message">Sign out</div>
         </div>
       </div>

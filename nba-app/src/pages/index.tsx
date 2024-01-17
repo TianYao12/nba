@@ -1,10 +1,13 @@
 import axios from "axios";
 import Link from "next/link";
 import styles from "../styles/news.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "../pages/login";
 import { getSession, useSession, signOut } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
+import i18n from "../../lib/i18n"
 
 interface News {
   url: string;
@@ -17,14 +20,26 @@ interface NewsPageProps {
 }
 
 const HomePage = ({ news }: NewsPageProps) => {
+  const { t } = useTranslation();
   const { data: session } = useSession();
-  console.log(session)
+  const router = useRouter();
+
+  console.log(session);
+  useEffect(() => {
+    i18n.changeLanguage('zh');
+  }, []);
+  
+  
+  
   return (
     <>
       {session ? (
         <>
           <div className={styles.title}>
-            <h1> {session.user?.email}'s NBA News</h1> 
+            <h1>
+              {" "}
+              {session.user?.email}'s NBA {t("news")}
+            </h1>
           </div>
           <div className={styles.grid}>
             {news.length > 0 ? (

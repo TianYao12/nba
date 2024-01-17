@@ -1,0 +1,17 @@
+{
+    "news": "News",
+    "teams": "Teams",
+    "search-for-player": "Search for Player",
+    "login": "Login",
+    "register":"Register",
+    "translate":"Translate",
+    "no-account": "Don't have an account",
+    "yes-account":"Already have an account",
+    "in": "in",
+    "using": "using",
+    "to":"to",
+    "username":"Username",
+    "email":"Email",
+    "password":"Password",
+    "confirm":"Confirm"
+}

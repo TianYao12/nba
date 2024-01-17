@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { registerValidate } from "../../lib/validate";
 import { useRouter } from "next/router";
+import Link from "next/link"
+import { useTranslation } from "react-i18next";
 
 interface Submission {
   username: string;
@@ -13,6 +15,7 @@ interface Submission {
 }
 
 const Register = () => {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const router = useRouter();
   const formik = useFormik({
@@ -42,12 +45,12 @@ const Register = () => {
 
   return (
     <div className={styles.title}>
-      <h1>Register in NBAExplorer</h1>
+      <h1>{t("register")} {t("in")} NBAExplorer</h1>
       <form onSubmit={formik.handleSubmit} className={styles.form}>
         <div className={styles.small}>
           <input
             className={styles.inputBox}
-            placeholder="Username"
+            placeholder={t("username")}
             type="string"
             {...formik.getFieldProps("username")} // does many props automatically
           />
@@ -60,7 +63,7 @@ const Register = () => {
         <div className={styles.small}>
           <input
             className={styles.inputBox}
-            placeholder="Email"
+            placeholder={t("email")}
             type="email"
             {...formik.getFieldProps("email")}
           />
@@ -73,7 +76,7 @@ const Register = () => {
         <div className={styles.small}>
           <input
             className={styles.inputBox}
-            placeholder="Password"
+            placeholder={t("password")}
             type="password"
             {...formik.getFieldProps("password")}
           />
@@ -86,7 +89,7 @@ const Register = () => {
         <div className={styles.small}>
           <input
             className={styles.inputBox}
-            placeholder="Confirm Password"
+            placeholder={t("confirm")+ " "+ t("password")}
             type="password"
             {...formik.getFieldProps("confirmPassword")}
           />
@@ -97,8 +100,11 @@ const Register = () => {
           <></>
         )}
         <button type="submit" className={styles.button}>
-          Register
+          {t("register")}
         </button>
+        <p className={styles.end}>
+        {t("yes-account")}? <Link href="/login">{t("login")}</Link>
+      </p>
       </form>
     </div>
   );

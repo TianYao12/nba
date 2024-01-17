@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import loginValidate from "../../lib/validate";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface Submission {
   email: string;
@@ -11,6 +13,7 @@ interface Submission {
 }
 
 const Login = () => {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const router = useRouter();
 
@@ -21,13 +24,13 @@ const Login = () => {
   });
 
   async function onSubmit(values: Submission) {
-    const status = await signIn('credentials', {
+    const status = await signIn("credentials", {
       redirect: false,
       email: values.email,
       password: values.password,
       callbackUrl: "http://localhost:3000",
     });
-    if (status.ok) router.push(status.url)
+    if (status.ok) router.push(status.url);
   }
 
   async function handleGoogleSignIn() {
@@ -38,12 +41,14 @@ const Login = () => {
   }
   return (
     <div className={styles.title}>
-      <h1 className={styles.h1}>Login to NBAExplorer</h1>
+      <h1 className={styles.h1}>
+        {t("login")} {t("to")} NBAExplorer
+      </h1>
       <form onSubmit={formik.handleSubmit} className={styles.form}>
         <div className={styles.small}>
           <input
             className={styles.inputBox}
-            placeholder="Email"
+            placeholder={t("email")}
             type="email"
             {...formik.getFieldProps("email")}
           />
@@ -56,7 +61,7 @@ const Login = () => {
         <div className={styles.small}>
           <input
             className={styles.inputBox}
-            placeholder="Password"
+            placeholder={t("password")}
             type="password"
             {...formik.getFieldProps("password")}
           />
@@ -68,17 +73,17 @@ const Login = () => {
         </div>
 
         <button type="submit" className={styles.button}>
-          Login
+          {t("login")}
         </button>
       </form>
       <button className={styles.button} onClick={handleGithubLogIn}>
-        Sign in with Github
+        {t("login")} {t("using")} Github
       </button>
       <button className={styles.button} onClick={handleGoogleSignIn}>
-        Sign in with Google
+        {t("login")} {t("using")} Google
       </button>
       <p className={styles.end}>
-        Don't have an account? <a href="/register">Register</a>
+        {t("no-account")} <Link href="/register">{t("register")}</Link>
       </p>
     </div>
   );

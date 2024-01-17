@@ -7,6 +7,7 @@ ul {
   
 .outside{
   position:fixed;
+  z-index:1000;
   top:0;
   left:0;
   right:0;
@@ -45,7 +46,7 @@ ul {
   }
   
   .main-nav a:hover {
-    color: #718daa;
+    color: #f1dffd;
   }
   
   .signin {
@@ -54,8 +55,20 @@ ul {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-right: 50px;
+    position: relative;
+  }
+
+  .translate {
+    position: absolute;
+    right: -200px;
+    text-decoration: none;
+    color: white;
+  }
+
+  .translate:hover {
+    color: #f1dffd;
   }
   
   .signin a {
@@ -74,7 +87,7 @@ ul {
   
   .signin .message {
     position: absolute;
-    right: 100px;
+    right: 50px;
     z-index: 2;
     background-color: rgb(71, 71, 71);
     color: white;
@@ -84,7 +97,7 @@ ul {
     border-radius: 3px;
   }
   
-  .signin:hover .message {
+  .signin .message:hover {
     opacity: 1;
   }
   

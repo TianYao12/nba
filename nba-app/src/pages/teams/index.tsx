@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../../styles/teams/teams.module.css";
 import { getSession, useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
+import { useTranslation } from "react-i18next";
 
 interface Team {
   name: string;
@@ -16,10 +17,11 @@ interface TeamPageProps {
 }
 
 export default function TeamPage({ teams }: TeamPageProps) {
+  const { t } = useTranslation();
   return (
     <div>
       <div className={styles.title}>
-        <h1>NBA Teams</h1>
+        <h1>NBA {t("teams")}</h1>
       </div>
       <div className={styles.grid}>
         {teams ? (
