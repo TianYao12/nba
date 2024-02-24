@@ -26,7 +26,6 @@ ChartJS.register(
   Filler
 );
 
-// types
 interface PlayerData {
   id: number;
   Year: string;
@@ -40,26 +39,17 @@ interface PlayerData {
 }
 
 export default function Player() {
-  const [player, setPlayer] = useState<PlayerData[] | null>(null);
-  const [pic, setPic] = useState(null);
+  const [player, setPlayer] = useState<PlayerData[] | null>(null); // player data
+  const [pic, setPic] = useState(null); // player face picture
   const [selectedSeasonType, setSelectedSeasonType] =
-    useState("Regular%20Season");
+    useState("Regular Season"); // season type
+  const [statisticType, setStatisticType] = useState("PPG"); // performance metric
+
   const router = useRouter();
-  const { player: playerName } = router.query as { player: string };;
+  const { player: playerName } = router.query as { player: string }; // get player name from query
 
-  useEffect(() => {
-    if (playerName) {
-      fetchPlayer(playerName);
-    }
-  }, [playerName]);
-
-  useEffect(() => {
-    if (playerName) {
-      fetchPlayerImage(playerName);
-    }
-  }, [playerName]);
-
-  const fetchPlayer = async (name:string) => {
+  const fetchPlayer = async (name: string) => {
+    // gets player data
     try {
       const response = await axios.get(`/api/playerapi?player=${name}`);
       setPlayer(response.data);
@@ -68,13 +58,13 @@ export default function Player() {
     }
   };
 
-  const fetchPlayerImage = async (name:string) => {
+  const fetchPlayerImage = async (name: string) => {
+    // gets player image from public json data
     try {
       const response = await axios.get(
         "https://raw.githubusercontent.com/alexnoob/BasketBall-GM-Rosters/master/player-photos.json"
       );
       const playerImages = response.data;
-
       const playerKey = getKey(name);
 
       if (playerImages[playerKey]) {
@@ -85,9 +75,18 @@ export default function Player() {
     }
   };
 
-  const getKey = (fullName:string) => {
-    const nameParts = fullName.split(" ");
+  useEffect(() => {
+    if (playerName) {
+      fetchPlayer(playerName);
+      fetchPlayerImage(playerName);
+    }
+  }, [playerName]);
 
+  // the public json data has a weird format like `${lastName}${firstName}01`, so we must turn the
+  // player name into this format
+  const getKey = (fullName: string) => {
+    // gets player key
+    const nameParts = fullName.split(" "); // fullName example is like "James Johnson"
     const firstName = nameParts[0];
     const lastName = nameParts[1];
 
@@ -100,116 +99,132 @@ export default function Player() {
 
   const chartLabels = player
     ? player
-        .filter((playerData) => playerData.Season_type === selectedSeasonType)
+        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
+        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
         .map((data) => data.Year)
     : [];
 
-  const data = {
-    labels: chartLabels,
-    datasets: [
-      {
-        label: "PPG",
-        data: player
-          ? player
-              .filter(
-                (playerData) => playerData.Season_type === selectedSeasonType
-              )
-              .map((data) => data.PTS / data.GP)
-          : null,
-        borderColor: "#cb0c9f",
-        borderWidth: 3,
-        pointBorderColor: "#cb0c9f",
-        pointBorderWidth: 3,
-        tension: 0.5,
-        fill: true,
-        backgroundColor: (context:any) => {
-          const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-          gradient.addColorStop(0, "#f797e1");
-          gradient.addColorStop(1, "white");
-          return gradient;
-        },
-      },
-    ],
+  const ppg_data = player
+    ? player
+        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
+        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .map((data) => data.PTS / data.GP)
+    : null;
+
+  const apg_data = player
+    ? player
+        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
+        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .map((data) => data.AST / data.GP)
+    : null;
+
+  const rpg_data = player
+    ? player
+        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
+        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .map((data) => data.REB / data.GP)
+    : null;
+
+    const data = {
+      labels: chartLabels,
+      datasets: [
+          {
+              label: selectedSeasonType,
+              data: statisticType === "PPG" ? ppg_data : statisticType === "RPG" ? rpg_data : apg_data,
+              borderColor: statisticType === "PPG" ? "#cb0c9f" : statisticType === "RPG" ? "#3e95cd" : "#c45850",
+              borderWidth: 3,
+              pointBorderColor: statisticType === "PPG" ? "#cb0c9f" : statisticType === "RPG" ? "#3e95cd" : "#c45850",
+              pointBorderWidth: 3,
+              tension: 0.5,
+              fill: true,
+              backgroundColor: (context: any) => {
+                  const ctx = context.chart.ctx;
+                  const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                  gradient.addColorStop(0, statisticType === "PPG" ? "#f797e1" : statisticType === "RPG" ? "#c9f7e1" : "#f7e1c9");
+                  gradient.addColorStop(1, "white");
+                  return gradient;
+              },
+          },
+      ],
   };
 
-  // I didn't know what type this was so i just put any
-  const options:any = {
+  // I didn't know the type of options
+  const options: any = {
     plugins: {
-      legend: true,
+        legend: true,
     },
     responsive: true,
     scales: {
-      y: {
-        ticks: {
-          font: {
-            size: 20,
-            weight: "bold",
-          },
+        y: {
+            ticks: {
+                font: {
+                    size: 20,
+                    weight: "bold",
+                },
+            },
+            title: {
+                display: true,
+                text: statisticType,
+                padding: {
+                    bottom: 10,
+                },
+                font: {
+                    size: 30,
+                    style: "italic",
+                    family: "Arial",
+                },
+            },
+            min: 0,
         },
-        title: {
-          display: true,
-          text: "PPG",
-          padding: {
-            bottom: 10,
-          },
-          font: {
-            size: 30,
-            style: "italic",
-            family: "Arial",
-          },
+        x: {
+            ticks: {
+                font: {
+                    size: 20,
+                    weight: "bold",
+                },
+            },
+            title: {
+                display: true,
+                text: "Month",
+                padding: {
+                    top: 10,
+                },
+                font: {
+                    size: 30,
+                    style: "italic",
+                    family: "Arial",
+                },
+            },
         },
-        min: 0,
-      },
-      x: {
-        ticks: {
-          font: {
-            size: 20,
-            weight: "bold",
-          },
-        },
-        title: {
-          display: true,
-          text: "Month",
-          padding: {
-            top: 10,
-          },
-          font: {
-            size: 30,
-            style: "italic",
-            family: "Arial",
-          },
-        },
-      },
     },
-  };
+};
 
   return (
     <>
-      <Link href="/players"> ← Back to players </Link>
+      <Link className= {styles.link} href="/players"> ← Back to players </Link>
       <div className={styles.main}>
         <div className={styles.top}>
-        {pic && (
-          <img
-            src={pic}
-            alt="Player"
-            style={{
-              width: "200px",
-              height: "150px",
-              borderRadius: "5px",
-              paddingBottom: "30px",
-            }}
-          />
-        )}
-        <p className={styles.word}>{playerName}</p>
+          {pic && (
+            <img
+              src={pic}
+              alt="Player"
+              style={{
+                width: "200px",
+                height: "150px",
+                borderRadius: "5px",
+                paddingBottom: "30px",
+              }}
+            />
+          )}
+          <p className={styles.word}>{playerName}</p>
         </div>
-        
+
         <select
           id="seasonTypeFilter"
           onChange={(e) => setSelectedSeasonType(e.target.value)}
           value={selectedSeasonType}
         >
-          <option value="Regular%20Season">Regular Season</option>
+          <option value="Regular Season">Regular Season</option>
           <option value="Playoffs">Playoffs</option>
         </select>
 
@@ -230,9 +245,8 @@ export default function Player() {
               {player
                 ? player
                     .filter(
-                      (playerstats) =>
-                        playerstats.Season_type === selectedSeasonType
-                    )
+                      (playerData) => (playerData.Season_type === "Regular%20Season" && 
+        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
                     .map((player) => (
                       <tr key={player.id}>
                         <td>{player.Year}</td>
@@ -248,14 +262,25 @@ export default function Player() {
             </tbody>
           </table>
         </div>
-
+                      
         {player ? (
           <>
-            <div>
-              <h1 style={{ marginTop: "90px" }}>
-                {playerName} {selectedSeasonType} PPG
-              </h1>
-              <div
+              <div className={styles.chartHeader}>
+                <h1>
+                  {playerName}'s {selectedSeasonType} {statisticType}
+                </h1>
+                <select
+                id="statTypeFilter"
+                onChange={(e) => setStatisticType(e.target.value)}
+                value={statisticType}
+                className={styles.statChanger}
+                >
+                  <option value="PPG">PPG</option>
+                  <option value="RPG">RPG</option>
+                  <option value="APG">APG</option>
+                </select>
+              </div>
+              <div className={styles.chart}
                 style={{
                   width: "900px",
                   height: "400px",
@@ -265,7 +290,6 @@ export default function Player() {
               >
                 <Line data={data} options={options}></Line>
               </div>
-            </div>
           </>
         ) : (
           <p>Loading...</p>

@@ -1,12 +1,10 @@
 import axios from "axios";
 import Link from "next/link";
 import styles from "../styles/news.module.css";
-import { useState, useEffect } from "react";
-import Login from "../pages/login";
+import { useEffect } from "react";
 import { getSession, useSession, signOut } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import i18n from "../../lib/i18n"
 
 interface News {
@@ -22,14 +20,11 @@ interface NewsPageProps {
 const HomePage = ({ news }: NewsPageProps) => {
   const { t } = useTranslation();
   const { data: session } = useSession();
-  const router = useRouter();
-
-  console.log(session);
+  // console.log(session);
+  
   useEffect(() => {
     i18n.changeLanguage('zh');
   }, []);
-  
-  
   
   return (
     <>
@@ -48,7 +43,7 @@ const HomePage = ({ news }: NewsPageProps) => {
                   <div className={styles.item} key={article.title}>
                     <Link href={article.url} className={styles.link}>
                       <img src={article.urlToImage} alt={article.title} />
-                      <p>{article.title}</p>
+                      <p style={{fontSize:"1rem"}}>{article.title}</p>
                     </Link>
                   </div>
                 ) : null

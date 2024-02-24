@@ -1,54 +1,72 @@
 .main {
-    display: flex;
-    flex-direction: column;
-    margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
 }
 
 .right {
-    background-color: rgba(179, 91, 208, 0.72);
-    flex:1   
+  background-color: rgba(179, 91, 208, 0.72);
+  flex: 1
 }
 
 .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th, .table td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  .table td a {
-    color:black;
-    text-decoration: none;
-  }
-  .table th {
-    font-weight: bold;
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background-color: #fce2fa;
-  }
+  width: 100%;
+  border-collapse: collapse;
+}
 
-  .choose {
-    padding:3px 8px 3px 8px;
-    margin-right: 100px;
-    margin-left:20px
-  }
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
 
-  .top {
-    display: flex;
-    position: relative;
-    align-items: center;
-  }
+.table td a {
+  color: black;
+  text-decoration: none;
+}
 
-  .word {
-    display: flex;
-    position:absolute;
-    left:300px;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 30px;
-  }
+.table th {
+  font-weight: bold;
+}
 
+.table tbody tr:nth-child(even) {
+  background-color: #fce2fa;
+}
+
+.choose {
+  padding: 3px 8px 3px 8px;
+  margin-right: 100px;
+  margin-left: 20px
+}
+
+.top {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.word {
+  display: flex;
+  position: absolute;
+  left: 300px;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.statChanger {
+  height: 20px;
+  margin-right: 540px;
+}
