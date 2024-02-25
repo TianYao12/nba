@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSession, useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import i18n from "../../lib/i18n";
 

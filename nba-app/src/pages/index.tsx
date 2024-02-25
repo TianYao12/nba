@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import styles from "../styles/news.module.css";
 import { useEffect } from "react";
-import { getSession, useSession, signOut } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { useTranslation } from "react-i18next";
 import i18n from "../../lib/i18n"
