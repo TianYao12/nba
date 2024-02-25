@@ -15,7 +15,7 @@
 }
 
 .right {
-    background-color: rgba(179, 91, 208, 0.72);
+    background-color: rgba(205, 115, 236, 0.707);
     flex:1   
 }
 
@@ -38,7 +38,7 @@
   }
   
   .table tbody tr:nth-child(even) {
-    background-color: #fce2fa;
+    background-color: #fadaf8;
   }
 
   .filterMenu {

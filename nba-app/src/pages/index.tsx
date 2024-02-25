@@ -16,7 +16,7 @@ interface News {
 interface NewsPageProps {
   news: News[];
 }
-
+// HomePage(news) renders NBA news fetched from Next.js API route and is the default page after authentication 
 const HomePage = ({ news }: NewsPageProps) => {
   const { t } = useTranslation();
   const { data: session } = useSession();
@@ -36,6 +36,7 @@ const HomePage = ({ news }: NewsPageProps) => {
               {session.user?.email}'s NBA {t("news")}
             </h1>
           </div>
+          {/*Grid layout of NBA news */}
           <div className={styles.grid}>
             {news.length > 0 ? (
               news.map((article) =>
@@ -63,6 +64,7 @@ const HomePage = ({ news }: NewsPageProps) => {
   );
 };
 
+// getServerSideProps(context) renders news at request time as long as user is still in session
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
   const session = await getSession({ req });
@@ -76,6 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
+    // fetches from Next.js API route NBA news
     const response = await axios.get("http://localhost:3000/api/newsget");
     const news = response.data.articles;
 

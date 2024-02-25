@@ -1,45 +1,16 @@
-// React Component
-import axios from "axios";
 import { useState } from "react";
 import styles from "../../styles/search.module.css";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { getSession, useSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
-interface Player {
-  _id: string;
-  Year: string;
-  Season_type: string;
-  PLAYER_ID: number;
-  RANK: number;
-  PLAYER: string;
-  TEAM_ID: number;
-  TEAM: string;
-  GP: number;
-  MIN: number;
-  FGM: number;
-  FGA: number;
-  FG_PCT: number;
-  FG3M: number;
-  FG3A: number;
-  FG3_PCT: number;
-  FTM: number;
-  FTA: number;
-  FT_PCT: number;
-  OREB: number;
-  DREB: number;
-  REB: number;
-  AST: number;
-  STL: number;
-  BLK: number;
-}
-
+/**
+ * PlayersPage() renders a search interface for NBA player statistics.
+ * After clicking 'search' it directs users to the dynamic URL of the searched Player
+ */
 export default function PlayersPage() {
-  const [name, setName] = useState("");
-  const [playerData, setPlayerData] = useState<Player[] | null>(null);
-  const { push } = useRouter();
-  const { data: session } = useSession();
+  const [name, setName] = useState(""); // player name to search up
+  const { push } = useRouter(); // to direct to that player's dynamic URL
 
   return (
     <>
@@ -63,20 +34,6 @@ export default function PlayersPage() {
           Search
         </button>
       </div>
-
-      {playerData ? (
-        <ul>
-          {playerData.map((player) => (
-            <li key={player._id}>
-              <strong>Team:</strong> {player.TEAM}
-              <br />
-              <strong>Year:</strong> {player.Year}
-              <br />
-              <strong>Season Type:</strong> {player.Season_type}
-            </li>
-          ))}
-        </ul>
-      ) : null}
     </>
   );
 }

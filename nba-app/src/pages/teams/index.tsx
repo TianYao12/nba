@@ -15,9 +15,13 @@ interface Team {
 interface TeamPageProps {
   teams: Team[];
 }
-
+/**
+ TeamPage(teams) displays all NBA teams 
+ It calls the Next.js API in the getServerSideProps function to render data at request time
+ */
 export default function TeamPage({ teams }: TeamPageProps) {
   const { t } = useTranslation();
+
   return (
     <div>
       <div className={styles.title}>
@@ -27,14 +31,14 @@ export default function TeamPage({ teams }: TeamPageProps) {
         {teams ? (
           teams.map((team) => (
             <div className={styles.team}>
-              <a href={`/teams/${team.name}`}>
+              <Link href={`/teams/${team.name}`}> {/* Links to dynamic route with full name of the team */}
                 <Image
                   src={`/teamlogos/${team.name}.png`}
                   width={200}
                   height={200}
                   alt="Picture of NBA team logo"
                 />
-              </a>
+              </Link>
               <div className={styles.teamItem}>
                 <p>{team.full_name}</p>
                 <p>{team.conference}</p>
@@ -49,6 +53,7 @@ export default function TeamPage({ teams }: TeamPageProps) {
   );
 }
 
+// getServerSideProps(context) renders the NBA teams at request time (would've done with getStaticProps but couldn't get it to work with sessions)
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
   const session = await getSession({ req });
@@ -60,7 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  try {
+  try { 
+    // get all teams from Next.js API
     const response = await axios.get(
       "http://localhost:3000/api/teams/teamsapi"
     );

@@ -17,8 +17,13 @@ interface PlayerStats {
   AST: number;
   REB: number;
 }
-export default function Page() {
-  const [team, setTeam] = useState(null);
+
+/**
+ * Team() displays the statistics of players playing this team
+ * Users can filter players' statistics by year from 2012-13 to 2021-22 and 
+ * season type (Regular Season or Playoffs)
+ */
+export default function Team() {
   const [players, setPlayers] = useState<PlayerStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedYear, setSelectedYear] = useState("2012-13");
@@ -26,22 +31,24 @@ export default function Page() {
     useState("Regular%20Season");
 
   const router = useRouter();
-  const { team: teamId } = router.query as { team: string };
+  const { team } = router.query as { team: string };
 
   useEffect(() => {
-    if (teamId) {
+    if (team) {
       fetchData();
     }
-  }, [teamId]);
+  }, [team]);
 
   const fetchData = async () => {
     try {
-      const mappedTeam = teamMappings[teamId]; // Map the router query parameter
+      // takes full name of team and gets short form (in database it is in short form)
+      const mappedTeam = teamMappings[team]; 
       if (!mappedTeam) {
-        console.error("No mapping found for team:", teamId);
+        console.error("No mapping found for team:", team);
         setIsLoading(false);
         return;
       }
+      // call Next.js API for getting data for team
       const response = await axios.get(
         `/api/teams/teamapi?team=${encodeURIComponent(mappedTeam)}`
       );
@@ -53,8 +60,8 @@ export default function Page() {
     }
   };
 
-  if (!teamId) {
-    return <div>Loading...</div>; // Handle the case when teamId is not available
+  if (!team) {
+    return <div>Loading...</div>; // Handle the case when team is not available
   }
 
   return (
@@ -100,22 +107,21 @@ export default function Page() {
             {
               <>
                 <Image
-                  src={`/teamlogos/${teamId.toLowerCase()}.png`}
+                  src={`/teamlogos/${team.toLowerCase()}.png`}
                   width={100}
                   height={100}
                   alt="Team Logo"
                 />
                 <br />
-                <a
-                  href={`https://www.nba.com/${teamId}`}
-                  className={styles.link}
-                >
-                  {teamId}
+                <a href={`https://www.nba.com/${team}`} className={styles.link}>
+                  {team}
                   <p className={styles.float}>Visit this team's website</p>
                 </a>
               </>
             }
           </div>
+          
+          {/* Table */}
           <div className={styles.right}>
             <table className={styles.table}>
               <thead>

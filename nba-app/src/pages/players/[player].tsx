@@ -29,15 +29,34 @@ ChartJS.register(
 interface PlayerData {
   id: number;
   Year: string;
+  Season_type: string;
   GP: number;
   MIN: number;
   FG_PCT: number;
   PTS: number;
   AST: number;
   REB: number;
-  Season_type: string;
+  //   FGM: number;
+  //   FGA: number;
+  //   FG_PCT: number;
+  //   FG3M: number;
+  //   FG3A: number;
+  //   FG3_PCT: number;
+  //   FTM: number;
+  //   FTA: number;
+  //   FT_PCT: number;
+  //   OREB: number;
+  //   DREB: number;
+  //   STL: number;
+  //   BLK: number;
 }
 
+/**
+ * Player() displays player statistics along with graphs to visualize PPG, APG, and RPG
+ * It fetches player data from Next.js API endpoint and player face image URL from public API.
+ * It renders the player's face image, player data in a table, and performance graphs
+ * It Provides options to filter the season type (Regular Season or Playoffs) and performance metric (PPG, RPG, APG).
+ */
 export default function Player() {
   const [player, setPlayer] = useState<PlayerData[] | null>(null); // player data
   const [pic, setPic] = useState(null); // player face picture
@@ -48,8 +67,8 @@ export default function Player() {
   const router = useRouter();
   const { player: playerName } = router.query as { player: string }; // get player name from query
 
+  // fetchPlayer(name) gets player data from Next.js API endpoint given player name
   const fetchPlayer = async (name: string) => {
-    // gets player data
     try {
       const response = await axios.get(`/api/playerapi?player=${name}`);
       setPlayer(response.data);
@@ -57,7 +76,7 @@ export default function Player() {
       console.error(error);
     }
   };
-
+  // fetchPlayerImage(name) fetches the player's face image URL from public API given player name
   const fetchPlayerImage = async (name: string) => {
     // gets player image from public json data
     try {
@@ -99,109 +118,154 @@ export default function Player() {
 
   const chartLabels = player
     ? player
-        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
-        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .filter(
+          (playerData) =>
+            (playerData.Season_type === "Regular%20Season" &&
+              selectedSeasonType === "Regular Season") ||
+            (playerData.Season_type == "Playoffs" &&
+              selectedSeasonType === "Playoffs")
+        )
         .map((data) => data.Year)
     : [];
 
   const ppg_data = player
     ? player
-        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
-        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .filter(
+          (playerData) =>
+            (playerData.Season_type === "Regular%20Season" &&
+              selectedSeasonType === "Regular Season") ||
+            (playerData.Season_type == "Playoffs" &&
+              selectedSeasonType === "Playoffs")
+        )
         .map((data) => data.PTS / data.GP)
     : null;
 
   const apg_data = player
     ? player
-        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
-        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .filter(
+          (playerData) =>
+            (playerData.Season_type === "Regular%20Season" &&
+              selectedSeasonType === "Regular Season") ||
+            (playerData.Season_type == "Playoffs" &&
+              selectedSeasonType === "Playoffs")
+        )
         .map((data) => data.AST / data.GP)
     : null;
 
   const rpg_data = player
     ? player
-        .filter((playerData) => (playerData.Season_type === "Regular%20Season" && 
-        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+        .filter(
+          (playerData) =>
+            (playerData.Season_type === "Regular%20Season" &&
+              selectedSeasonType === "Regular Season") ||
+            (playerData.Season_type == "Playoffs" &&
+              selectedSeasonType === "Playoffs")
+        )
         .map((data) => data.REB / data.GP)
     : null;
 
-    const data = {
-      labels: chartLabels,
-      datasets: [
-          {
-              label: selectedSeasonType,
-              data: statisticType === "PPG" ? ppg_data : statisticType === "RPG" ? rpg_data : apg_data,
-              borderColor: statisticType === "PPG" ? "#cb0c9f" : statisticType === "RPG" ? "#3e95cd" : "#c45850",
-              borderWidth: 3,
-              pointBorderColor: statisticType === "PPG" ? "#cb0c9f" : statisticType === "RPG" ? "#3e95cd" : "#c45850",
-              pointBorderWidth: 3,
-              tension: 0.5,
-              fill: true,
-              backgroundColor: (context: any) => {
-                  const ctx = context.chart.ctx;
-                  const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                  gradient.addColorStop(0, statisticType === "PPG" ? "#f797e1" : statisticType === "RPG" ? "#c9f7e1" : "#f7e1c9");
-                  gradient.addColorStop(1, "white");
-                  return gradient;
-              },
-          },
-      ],
+  const data = {
+    labels: chartLabels,
+    datasets: [
+      {
+        label: selectedSeasonType,
+        data:
+          statisticType === "PPG"
+            ? ppg_data
+            : statisticType === "RPG"
+            ? rpg_data
+            : apg_data,
+        borderColor:
+          statisticType === "PPG"
+            ? "#cb0c9f"
+            : statisticType === "RPG"
+            ? "#3e95cd"
+            : "#c45850",
+        borderWidth: 3,
+        pointBorderColor:
+          statisticType === "PPG"
+            ? "#cb0c9f"
+            : statisticType === "RPG"
+            ? "#3e95cd"
+            : "#c45850",
+        pointBorderWidth: 3,
+        tension: 0.5,
+        fill: true,
+        backgroundColor: (context: any) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+          gradient.addColorStop(
+            0,
+            statisticType === "PPG"
+              ? "#f797e1"
+              : statisticType === "RPG"
+              ? "#c9f7e1"
+              : "#f7e1c9"
+          );
+          gradient.addColorStop(1, "white");
+          return gradient;
+        },
+      },
+    ],
   };
 
   // I didn't know the type of options
   const options: any = {
     plugins: {
-        legend: true,
+      legend: true,
     },
     responsive: true,
     scales: {
-        y: {
-            ticks: {
-                font: {
-                    size: 20,
-                    weight: "bold",
-                },
-            },
-            title: {
-                display: true,
-                text: statisticType,
-                padding: {
-                    bottom: 10,
-                },
-                font: {
-                    size: 30,
-                    style: "italic",
-                    family: "Arial",
-                },
-            },
-            min: 0,
+      y: {
+        ticks: {
+          font: {
+            size: 20,
+            weight: "bold",
+          },
         },
-        x: {
-            ticks: {
-                font: {
-                    size: 20,
-                    weight: "bold",
-                },
-            },
-            title: {
-                display: true,
-                text: "Month",
-                padding: {
-                    top: 10,
-                },
-                font: {
-                    size: 30,
-                    style: "italic",
-                    family: "Arial",
-                },
-            },
+        title: {
+          display: true,
+          text: statisticType,
+          padding: {
+            bottom: 10,
+          },
+          font: {
+            size: 30,
+            style: "italic",
+            family: "Arial",
+          },
         },
+        min: 0,
+      },
+      x: {
+        ticks: {
+          font: {
+            size: 20,
+            weight: "bold",
+          },
+        },
+        title: {
+          display: true,
+          text: "Month",
+          padding: {
+            top: 10,
+          },
+          font: {
+            size: 30,
+            style: "italic",
+            family: "Arial",
+          },
+        },
+      },
     },
-};
+  };
 
   return (
     <>
-      <Link className= {styles.link} href="/players"> ← Back to players </Link>
+      <Link className={styles.link} href="/players">
+        {" "}
+        ← Back to players{" "}
+      </Link>
       <div className={styles.main}>
         <div className={styles.top}>
           {pic && (
@@ -245,8 +309,12 @@ export default function Player() {
               {player
                 ? player
                     .filter(
-                      (playerData) => (playerData.Season_type === "Regular%20Season" && 
-        selectedSeasonType==="Regular Season") || (playerData.Season_type == "Playoffs" && selectedSeasonType === "Playoffs"))
+                      (playerData) =>
+                        (playerData.Season_type === "Regular%20Season" &&
+                          selectedSeasonType === "Regular Season") ||
+                        (playerData.Season_type == "Playoffs" &&
+                          selectedSeasonType === "Playoffs")
+                    )
                     .map((player) => (
                       <tr key={player.id}>
                         <td>{player.Year}</td>
@@ -262,34 +330,35 @@ export default function Player() {
             </tbody>
           </table>
         </div>
-                      
+
         {player ? (
           <>
-              <div className={styles.chartHeader}>
-                <h1>
-                  {playerName}'s {selectedSeasonType} {statisticType}
-                </h1>
-                <select
+            <div className={styles.chartHeader}>
+              <h1>
+                {playerName}'s {selectedSeasonType} {statisticType}
+              </h1>
+              <select
                 id="statTypeFilter"
                 onChange={(e) => setStatisticType(e.target.value)}
                 value={statisticType}
                 className={styles.statChanger}
-                >
-                  <option value="PPG">PPG</option>
-                  <option value="RPG">RPG</option>
-                  <option value="APG">APG</option>
-                </select>
-              </div>
-              <div className={styles.chart}
-                style={{
-                  width: "900px",
-                  height: "400px",
-                  padding: "20px",
-                  cursor: "pointer",
-                }}
               >
-                <Line data={data} options={options}></Line>
-              </div>
+                <option value="PPG">PPG</option>
+                <option value="RPG">RPG</option>
+                <option value="APG">APG</option>
+              </select>
+            </div>
+            <div
+              className={styles.chart}
+              style={{
+                width: "900px",
+                height: "400px",
+                padding: "20px",
+                cursor: "pointer",
+              }}
+            >
+              <Line data={data} options={options}></Line>
+            </div>
           </>
         ) : (
           <p>Loading...</p>

@@ -5,6 +5,13 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "../../../../lib/mongodb";
 import { compare } from "bcryptjs";
 
+/*
+ * The NextAuth function configures authentication providers (Google, GitHub, and custom credentials)
+ * It querys the database to see if provided email exists. If so, it compares the hashed password stored
+ * in database with the hashed password provided by the user during login. If the passwords match, the user is
+ * authenticated and additional information is returned. If no user is found with the provided email or
+ * the passwords don't match, error messages are thrown.
+ */
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -18,6 +25,7 @@ export default NextAuth({
     CredentialsProvider({
       name: "Credentials",
       async authorize(credentials, req) {
+        // connect to MongoDB and get user with user email
         const mongoClient = await clientPromise;
         const user = await mongoClient
           .db("nba")
@@ -28,16 +36,16 @@ export default NextAuth({
           throw new Error("No user found with this email, so sign up!");
         }
 
-        const checkPassword = await compare( // compares the bcrypt hashed credentials.password with user.hashedPasword
+        // compares hashed password in database with hashed password provided by user during login
+        const checkPassword = await compare(
           credentials.password,
-          user.hashedPassword 
+          user.hashedPassword
         );
-
         if (!checkPassword) {
           throw new Error("Username or Password doesn't match!");
         }
 
-        return { ...user, email: user.email }; // Include additional information if needed
+        return { ...user, email: user.email }; // add additional information if needed?
       },
     }),
   ],

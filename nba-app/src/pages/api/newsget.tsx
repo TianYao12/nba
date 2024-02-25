@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
+// handler(req, res) calls a public news API and gets news specific to NBA returned as JSON response
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -18,7 +19,7 @@ export default async function handler(
     const response = await axios.get(endpoint, { params });
     const articles = response.data.articles;
 
-    res.status(200).json({ articles });
+    res.status(200).json({ articles }); // return as JSON response
   } catch (error) {
     console.error(error);
     res
