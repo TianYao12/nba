@@ -152,7 +152,7 @@ export default function Team() {
                         </a>
                       </td>
                       <td>{player.Year}</td>
-                      <td>{player.Season_type}</td>
+                      <td>{player.Season_type == "Regular%20Season"? "Regular Season" : player.Season_type}</td>
                       <td>{player.GP}</td>
                       <td>{player.MIN}</td>
                       <td>{player.FG_PCT}</td>
